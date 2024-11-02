@@ -107,11 +107,15 @@ export default function Anime() {
     }
 
     const increaseEpisodes = () => {
-        updateAnimeList({ "episodes_count": parseInt(animeList.episodes_count) + 1 })
+        if (animeList.episodes_count < anime.episodes) {
+            updateAnimeList({ "episodes_count": parseInt(animeList.episodes_count) + 1 })
+        }
     }
 
     const decreaseEpisodes = () => {
+        if (animeList.episodes_count > 0) {
         updateAnimeList({ "episodes_count": parseInt(animeList.episodes_count) - 1 })
+        }
     }
 
    const changeStatus = (e) => {
@@ -229,8 +233,8 @@ export default function Anime() {
                                 </Box>
                                 {
                                     animeList
-                                        ? <Box display={'flex'} mt={'20px'} gap={'1%'}>
-                                            <Box border={'2px solid'} borderRadius={'4px'} borderColor={theme.palette.grey[400]} >
+                                        ? <Box display={'flex'} mt={'20px'} gap={'10px'} flexWrap={'wrap'}>
+                                            <Box border={'2px solid'} height={'45px'} borderRadius={'4px'} borderColor={theme.palette.grey[400]} >
                                                 <IconButton onClick={increaseEpisodes}>
                                                     <AddCircleIcon />
                                                 </IconButton>
@@ -239,7 +243,7 @@ export default function Anime() {
                                                     <RemoveCircleIcon />
                                                 </IconButton>
                                             </Box>
-                                            <Box >
+                                            <Box height={'45px'} >
                                                 <FormControl sx={{
                                                     minWidth: 200, height: '100%',
                                                     '& .MuiInputBase-root': {
@@ -279,7 +283,7 @@ export default function Anime() {
                                                     </Select>
                                                 </FormControl>
                                             </Box>
-                                            <Box>
+                                            <Box height={'45px'}>
                                                 <SelectStatus status={animeList.status} changeStatus={changeStatus} />
                                             </Box>
                                         </Box> :
@@ -289,7 +293,7 @@ export default function Anime() {
                                     loadingStreaming ? <CircularProgress />
                                         : <Box mt={2} >
                                             <Typography variant='h4'>Streaming</Typography>
-                                            <Box display={'flex'} flexWrap={'wrap'} mt={2}>
+                                            <Box display={'flex'} flexWrap={'wrap'} gap={'10px'} mt={2}>
                                                 {streaming.map((s, i) => {
                                                     return (
                                                         <Box key={i} mx={'0.2%'} borderRadius={'50%'} maxHeight={'50px'} sx={{ aspectRatio: '1/1' }} overflow={'hidden'}>
