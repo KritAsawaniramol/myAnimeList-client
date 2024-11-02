@@ -50,7 +50,7 @@ export default function ActionAreaCard(props) {
     const { theme } = useThemeContext();
 
     const handleOnClick = (e) => {
-        console.log(mal_id);
+
         nav(`/anime/${mal_id}`)
     }
 
