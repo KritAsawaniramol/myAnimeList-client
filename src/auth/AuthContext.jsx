@@ -23,23 +23,15 @@ export const useAuth = () => {
 }
 
 export const AuthContextProvider = ({ children }) => {
-    console.log("AuthContextProvider");
     const [isAuthenticated, setIsAuthenticated] = useState(getIsUserLoggedIn());
     const isUserLoggedIn = Cookies.get("is_user_logged_in")
-    console.log(isUserLoggedIn);
-    console.log(isAuthenticated);
     if (!isAuthenticated && isUserLoggedIn) {
-        console.log("new login");
         const newAccessToken = Cookies.get("access_token")
         const newRefreshToken = Cookies.get("refresh_token")
         const newCredentialID = Cookies.get("credential_id")
-        console.log(newAccessToken);
-        console.log(newRefreshToken);
-        console.log(newCredentialID);
         if (newAccessToken && newRefreshToken && newCredentialID) {
             setIsAuthenticated(true)
             setIsUserLoggedIn("1")
-            console.log("setAccessToken");
             setAccessToken(newAccessToken)
             setRefreshToken(newRefreshToken)
             setCredentialID(newCredentialID)

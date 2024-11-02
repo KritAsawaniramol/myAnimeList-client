@@ -31,9 +31,6 @@ export default function Search() {
     const [genresFillter, setGenresFillter] = useState([])
     const [isHighlighted, setIsHighlighted] = useState(false);
 
-
-
-
     const fetchGenres = async () => {
         setGenresIsLoading(true)
         limitedSendJikanReq({ method: 'get', url: `/genres/anime` })
@@ -48,15 +45,13 @@ export default function Search() {
     }
     const fetchData = async (query, page, genres) => {
         setIsLoading(true)
-
         const url = `/anime?q=${query ? query : ""}&page=${page ? page : ""}&genres=${genres ? genres : ""}`
         console.log(url);
         limitedSendJikanReq({ method: 'get', url: url })
             .then(function (res) {
-                console.log(res.data);
+                setGenresFillter([])
                 setAnime(res.data.data)
                 SetPagination(res.data.pagination)
-                console.log(res.data.pagination);
             }).catch(function (error) {
                 console.log(error);
             }).finally(() => {
@@ -89,14 +84,7 @@ export default function Search() {
 
     useEffect(() => {
         console.log('call useEffect');
-        // const q = searchParams.get("query")
-        // if (q !== null) {
-        //     setQuery(q)
-        // }
-        // const p = searchParams.get("page")
-        // if (p !== null) {
-        //     setPage(parseInt(p))
-        // }
+      
         fetchData("", 1, "")
         fetchGenres()
     }, [])
@@ -168,8 +156,6 @@ export default function Search() {
 
                     <Typography variant='h3' mt={3}>Search Result: {pagination ? pagination.items.total : 0}</Typography>
                     {isLoading ? <CircularProgress /> : <Box>
-
-
                         <Grid container
                         marginTop={'30px'}
                             spacing={{ xs: 1, md: 3 }}
@@ -203,7 +189,11 @@ export default function Search() {
                                 )
                             }
                         </Grid>
-                        <Pagination count={pagination.last_visible_page} page={page} onChange={handleChangePage} sx={{
+                        <Pagination 
+                        count={pagination.last_visible_page} 
+                        page={page} 
+                        onChange={handleChangePage} 
+                        sx={{
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useThemeContext } from './theme/ThemeContextProvider';
-import { responsiveFontSizes  } from '@mui/material';
+import { responsiveFontSizes } from '@mui/material';
 
 import {
   Box,
@@ -13,6 +13,11 @@ import {
   Paper,
   InputAdornment,
   Divider,
+  ListItemButton,
+  Collapse,
+  ListItemIcon,
+  ListItemText,
+
 } from '@mui/material';
 import AppAppBar from './AppAppBar'
 import NightModeToggle from './NightModeToggle';
@@ -24,6 +29,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import ScoreCheckboxesGroup from './ScoreCheckboxesGroup';
 import StatusCheckboxesGroup from './StatusCheckboxesGroup';
 import AnimeListCard from './AnimeListCard';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 export default function Profile() {
   const { theme } = useThemeContext();
   const [userProfile, setUserProfile] = useState();
@@ -36,14 +44,17 @@ export default function Profile() {
   const [filterScore, setFilterScore] = useState([])
   const { isAuthenticated } = useAuth()
   const nav = useNavigate()
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
   const searchTitle = (animeTitle, animeStatus, animeScore) => {
-    if (filterName === "" || 
-      filterName === null || 
+    if (filterName === "" ||
+      filterName === null ||
       (animeTitle.trim().toLowerCase().startsWith(filterName.toLowerCase()) && filterName !== ""
-    ))  {
-      console.log(filterScore);
-      console.log(animeScore);
+      )) {
       if (filterStatus.length === 0 || filterStatus.includes(animeStatus)) {
         if (filterScore.length === 0 || filterScore.includes(`${animeScore}`)) {
           return true
@@ -58,15 +69,11 @@ export default function Profile() {
     }
   }
 
-  useEffect(() => {
-    console.log(filterStatus);
-  }, [filterStatus])
 
   const onSearchChange = (e) => {
     let keyword = e.target.value
 
     // animeList.filter((item) => item.)
-    console.log(keyword);
     setFilterName(keyword)
   }
 
@@ -77,15 +84,14 @@ export default function Profile() {
     } else {
       nav("/signin")
     }
-    console.log(theme);
   }, [])
 
   const fetchUserProfile = async () => {
-    console.log("fetchUserProfile");
+    setIsLoading(true)
     sendProtectedReq.get("/profile")
       .then((res) => {
         setUserProfile(res.data.user)
-        console.log(res.data.user);
+        console.log(res.data.user.avatar_url);
         setIsLoading(false)
       }).catch((err) => {
         console.log(err);
@@ -121,25 +127,25 @@ export default function Profile() {
                     borderRadius: theme.shape.borderRadius
                   }}
                 >
-                    <svg width={0} height={0}>
-                            <defs>
-                                <linearGradient id="circularProgressGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                    <stop offset="0%" stopColor="#e01cd5" />
-                                    <stop offset="100%" stopColor="#1CB5E0" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+                  <svg width={0} height={0}>
+                    <defs>
+                      <linearGradient id="circularProgressGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#e01cd5" />
+                        <stop offset="100%" stopColor="#1CB5E0" />
+                      </linearGradient>
+                    </defs>
+                  </svg>
                   <Box
                     display={'flex'}
+                    flexWrap={'wrap'}
                     ml={3}
                     py={2}
                     gap={'20px'}
                   >
                     <Box maxHeight={'96px'} maxWidth={'20%'} >
-                    <img src={userProfile.avatar_url} />
+                      <img src={userProfile.avatar_url} />
                     </Box>
                     <Box>
-
                       <Typography>Name: {userProfile.name}</Typography>
                       <Typography sx={{
                         overflowWrap: 'break-word'
@@ -148,10 +154,48 @@ export default function Profile() {
                   </Box>
                   <Divider />
 
-                  <Box padding={'1%'} display={'flex'} >
+                  <Box padding={'1%'} sx={{ display: { xs: 'block', sm: 'block', md: 'flex' } }} >
+                    <Box sx={{ display: { sm: 'block', md: 'none' } }}>
+                      <TextField
+                        sx={{
+                          '& .MuiInputBase-root': {
+                            backgroundColor: theme.palette.background.paper
+                          }
+                        }}
+                        variant="outlined"
+                        placeholder='Search...'
+                        value={filterName}
+                        onChange={onSearchChange}
+                        fullWidth
+                        slotProps={{
+                          input: {
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <SearchIcon />
+                              </InputAdornment>
+                            ),
+                          },
+                        }}
+                      />
+                    
+                      <ListItemButton onClick={handleClick} sx={{my: '10px'}}>
+                        <ListItemIcon>
+                          <FilterAltIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Filter" />
+                        {open ? <ExpandLess /> : <ExpandMore />}
+                      </ListItemButton>
+                      <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box display={'flex'} flexWrap={'wrap'}  >
+                          <StatusCheckboxesGroup statusFilter={filterStatus} setStatusFilterFn={setFilterStatus} />
+                          <ScoreCheckboxesGroup scoreFilter={filterScore} setScoreFilterFn={setFilterScore} />
+                        </Box>
+                      </Collapse>
+
+                    </Box>
                     <Box width={'20%'} mr={'10px'}
                       sx={{
-                        display: {xs: 'none', sm: 'none', md: 'block'}
+                        display: { xs: 'none', sm: 'none', md: 'block' }
                       }}
                     >
                       <TextField
@@ -175,25 +219,26 @@ export default function Profile() {
                         }}
                       />
                       <StatusCheckboxesGroup statusFilter={filterStatus} setStatusFilterFn={setFilterStatus} />
-                      <ScoreCheckboxesGroup scoreFilter={filterScore} setScoreFilterFn={setFilterScore}/>
+                      <ScoreCheckboxesGroup scoreFilter={filterScore} setScoreFilterFn={setFilterScore} />
                     </Box>
-                    <Box width={'100%'}  sx={{ overflowY: 'scroll' }}  maxHeight={'800px'}>
+
+                    <Box width={'100%'} sx={{ overflowY: 'scroll' }} maxHeight={'800px'}>
                       {isAnimeListLoading ? <CircularProgress /> :
                         <>
                           {
                             animeList.map(function (item, i) {
                               console.log(item);
                               return (
-                                  <AnimeListCard 
-                                  key={i} 
-                                  mal_id={item.mal_id} 
-                                  status={item.status} 
+                                <AnimeListCard
+                                  key={i}
+                                  mal_id={item.mal_id}
+                                  status={item.status}
                                   episodes_count={item.episodes_count}
                                   filterNameFn={searchTitle}
                                   filterName={filterName}
-                                  score={item.score} 
+                                  score={item.score}
                                   fetchAnimeListFn={fetchAnimeList}
-                                  />
+                                />
                               )
                             })
                           }

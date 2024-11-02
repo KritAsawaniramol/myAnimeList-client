@@ -35,7 +35,7 @@ export default function TopAnimes() {
             {topAnime.map(function (item, i) {
               const title = getFirst20Chars(item.title)
               return (
-                <Grid spacing={12}  size={{ xs: 6,sm: 4, md: 2, lg:2, xl: 2, xxl: 2}} key={i}>
+                <Grid spacing={12}  size={{ xs: 6,sm: 4, md: 3, lg:2, xl: 2, xxl: 2}} key={i}>
                   <Box>
                     <Box position={'relative'} >
                       <Box

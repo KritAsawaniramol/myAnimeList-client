@@ -17,9 +17,6 @@ export const getDesignTokens = (mode) => ({
         button: {
           textTransform: 'none'
         },
-        
-
-          
           body1: {
             fontSize: '1.2rem',
             '@media (min-width:600px)': {
@@ -53,8 +50,6 @@ export const getDesignTokens = (mode) => ({
             },
             scoreColor: 
               ["#000", "#D32F2F", "#F44336", "#FF5722", "#FF7043", "#FF9800", "#FFEB3B", "#AED581", "#81C784", "#66BB6A", "#4CAF50"]
-            
-              
           }
         : {
             // palette values for dark mode

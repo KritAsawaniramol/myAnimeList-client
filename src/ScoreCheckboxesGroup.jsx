@@ -33,7 +33,7 @@ export default function ScoreCheckboxesGroup(props) {
         <Box sx={{ display: 'flex' }}>
             <FormControl sx={{ my: 3, ml: 3 }} component="fieldset" variant="standard">
                 <FormLabel component="legend">Score</FormLabel>
-                <FormGroup>
+                <FormGroup >
                     <FormControlLabel control={<Checkbox onChange={handleChange} name="10" sx={{  color: theme.palette.scoreColor[10], '&.Mui-checked': {  color: theme.palette.scoreColor[10] }, }} />} label="(10) Masterpiece" />
                     <FormControlLabel control={<Checkbox onChange={handleChange} name="9" sx={{  color: theme.palette.scoreColor[9]  , '&.Mui-checked': { color: theme.palette.scoreColor[9]   }, }} />} label="(9) Great" />
                     <FormControlLabel control={<Checkbox onChange={handleChange} name="8" sx={{  color: theme.palette.scoreColor[8]  , '&.Mui-checked': { color: theme.palette.scoreColor[8]   }, }} />} label="(8) Very Good" />

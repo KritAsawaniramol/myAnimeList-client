@@ -17,31 +17,24 @@ function App() {
   }, [])
 
   return (
-
     <>
       <ThemeProvider theme={theme}>
-
         <CssBaseline />
-
         <AppAppBar />
         <NightModeToggle />
         <Container maxWidth={'xl'} >
-
           <Box sx={{
             marginTop: 0,
             paddingTop: 0
           }}>
-
             <CarouselImage />
           </Box>
-
           <Box marginTop={'10px'}>
             <Typography variant='h3' mb={2}>
               Top Anime Series
             </Typography>
             <TopAnimes />
           </Box>
-
         </Container>
 
         <Footer />

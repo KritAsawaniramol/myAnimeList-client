@@ -15,7 +15,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import Logo from './Logo'
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
 import { useThemeContext } from './theme/ThemeContextProvider';
 import { useAuth } from './auth/AuthContext';
 import { limiter, restartLimiter, sendProtectedReq } from './api/useApi';
@@ -24,7 +23,7 @@ export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
   const [userProfile, setUserProfile] = React.useState();
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const {accessToken, logout, isAuthenticated} = useAuth()
+  const { logout, isAuthenticated} = useAuth()
   const nav = useNavigate()
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
@@ -86,16 +85,16 @@ export default function AppAppBar() {
             <Box
               sx={{ display: { xs: 'none', md: 'flex' } }}
             >
-              <Button variant="text" color="info" size="small"
+              <Button variant="text" color="info" size="small" sx={{fontSize: '1rem'}}
                 onClick={() => handleNav('/')}>
                 Home
               </Button>
-              <Button variant="text" color="info" size="small"
+              <Button variant="text" color="info" size="small" sx={{fontSize: '1rem'}}
                 onClick={() =>  handleNav("/search")}
               >
                 Search Anime
               </Button>
-              <Button variant="text" color="info" size="small"
+              <Button variant="text" color="info" size="small" sx={{fontSize: '1rem'}}
                 onClick={() => handleNav("/seasonal")}
               >
                 Seasonal Anime
@@ -125,11 +124,7 @@ export default function AppAppBar() {
                   </Button>
                 </Box>
                 : <>
-                  <Button color="primary" variant="text" size="small"
-                    onClick={() => nav("/testSigin")}
-                  >
-                    Test Sign in
-                  </Button>
+               
                   <Button color="primary" variant="text" size="small"
                     onClick={() => nav("/signin")}
                   >
@@ -169,7 +164,6 @@ export default function AppAppBar() {
                 <MenuItem onClick={() => handleNav("/")}>Home</MenuItem>
                 <MenuItem onClick={() => handleNav("/search")}>Search Anime</MenuItem>
                 <MenuItem onClick={() => handleNav("/seasonal")}>Seasonal Anime</MenuItem>
-
                 {
                   isLoggedIn === true ?
                     <>
@@ -190,7 +184,6 @@ export default function AppAppBar() {
                       </Button>
                     </MenuItem>
                 }
-
               </Box>
             </Drawer>
           </Box>

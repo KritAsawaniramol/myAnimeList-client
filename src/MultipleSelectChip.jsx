@@ -50,8 +50,6 @@ export default function MultipleSelectChip(props) {
     console.log(personName);
   }, [personName])
 
-
-
   return (
     <div>
       <FormControl sx={{ width: 300 }}>

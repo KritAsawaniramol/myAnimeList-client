@@ -16,7 +16,7 @@ import { AuthContextProvider } from './auth/AuthContext.jsx';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element:  <App />,
     errorElement: <ErrorPage />,
   },
   {

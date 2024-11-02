@@ -13,7 +13,6 @@ export function CircularProgressWithLabel(props) {
 
     const ref = React.useRef(null)
     React.useEffect(() => {
-        console.log(ref.current.clientWidth);
         setHeight(ref.current.clientWidth)
     })
 
