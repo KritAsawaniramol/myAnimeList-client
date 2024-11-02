@@ -6,6 +6,8 @@ import { useThemeContext } from './theme/ThemeContextProvider';
 import SelectStatus from './SelectStatus';
 import SelectScore from './SelectScore';
 import DeleteAnimeButton from './DeleteAnimeButton';
+import { useNavigate } from 'react-router-dom';
+import { CardActions } from '@mui/joy';
 
 export default function AnimeListCard(props) {
     const [mal_id, setMalID] = useState(props.mal_id ? props.mal_id : "")
@@ -81,6 +83,11 @@ export default function AnimeListCard(props) {
         setScore(parseInt(e.target.value))
         updateAnimeList({ "score": parseInt(e.target.value) })
     }
+    const nav = useNavigate()
+
+    const handleOnClick = (e) => {
+        nav(`/anime/${mal_id}`)
+    }
 
     return (
         <>
@@ -89,22 +96,22 @@ export default function AnimeListCard(props) {
                 <Box display={'flex'} justifyContent={'center'}>
                     <Paper
                         // display={filterNameFn(anime.title, props.filterName) ?  'none' : 'block'}
-                        px={'5%'}
+                        px={'20px'}
+                        
                         variant="outlined"
                         {...(theme.palette.mode === 'dark' && { elevation: 0, variant: 'elevation' })}
                         sx={{
                             display: props.filterNameFn(anime.title, status, score) ? 'flex' : 'none',
                             width: '100%',
-                            height: 'auto',
+                            height: '250px',
                             mb: '10px',
                             position: 'relative',
                             overflow: 'visible',
                             '@media (max-width:600px)': {
                                 width: '80%',
-                            }
+                            },
                         }}
                     >
-                      
 
                         <Box display={'flex'} width={'75%'} position={'relative'} sx={{
                             '@media (max-width:600px)': {
@@ -144,9 +151,13 @@ export default function AnimeListCard(props) {
                                     />
                                 </Box>
                             </Box>
+
                             <CardMedia
+                            onClick={handleOnClick}
+                                    c
                                 component="img"
                                 sx={{
+                                    cursor: 'pointer',
                                     maxWidth: '30%',
                                     minHeight: '220px',
                                     maxHeight: '300px',
@@ -160,6 +171,7 @@ export default function AnimeListCard(props) {
                                 }}
                                 src={anime.images.webp.large_image_url}
                             />
+
                             <Box display={'flex'} justifyContent={'center'} >
                                 <Box p={{ sm: '5px', md: '20px' }} >
                                     <Typography variant='h5' fontWeight={'bold'}>{anime.title ? anime.title : ""}</Typography>
