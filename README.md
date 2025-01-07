@@ -1,5 +1,5 @@
 <h1 align="center">
-  Book-Store Microservice
+    My Anime List
   <br>
 </h1>
 <p align="center">A web application that provides anime information, allows users to track their anime, create their anime lists, and space to discuss their favorite series.</p>
